@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install fish
+        run: |
+          sudo apt-add-repository ppa:fish-shell/release-3 -y
+          sudo apt-get update -y
+          sudo apt-get install -y fish
+
+      - name: Install fisher and fishtape
+        run: |
+          fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher install jorgebucaran/fisher"
+          fish -c "fisher install jorgebucaran/fishtape"
+
+      - name: Install flock functions
+        run: |
+          fish -c "fisher install ."
+
+      - name: Run tests
+        run: |
+          fish -c "fishtape tests/*.fish"
