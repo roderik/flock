@@ -1,5 +1,7 @@
 # flock
 
+![flock hero](assets/hero.jpg)
+
 A [fisher](https://github.com/jorgebucaran/fisher) plugin for git worktree management — create, switch, and clean up worktrees with an auto-configured multi-pane workspace (Zellij or cmux).
 
 Each `flock new` opens a new tab with three panes: your AI coding assistant (Claude or Codex), a terminal, and lazygit — all scoped to the worktree directory.
