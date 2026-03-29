@@ -25,7 +25,6 @@ fisher install roderik/flock
 ```fish
 flock new [branch|PR|ticket]   # Create or open a worktree
 flock delete                   # Delete a worktree via fzf picker
-flock orchestrator             # Open the orchestrator tab
 flock tab-setup                # Set up a 3-pane workspace in the current dir
 ```
 
@@ -51,15 +50,6 @@ Opens an fzf picker listing all worktrees (current branch preselected). Removes 
 flock delete
 ```
 
-### flock orchestrator
-
-Navigates to `$FLOCK_ORCHESTRATOR_DIR` and renames the current Zellij tab to "Orchestrator".
-
-```fish
-flock orchestrator
-flock orch   # alias
-```
-
 ### flock tab-setup
 
 Opens a new workspace tab (Zellij or cmux) scoped to the current directory, with three panes: AI assistant (main), terminal, and lazygit.
@@ -71,26 +61,23 @@ flock ts     # alias
 
 ## Abbreviations
 
-| Subcommand           | `f*` | `wt*` |
-|----------------------|------|-------|
-| `flock new`          | `fn` | `wtn` |
-| `flock delete`       | `fd` | `wtd` |
-| `flock orchestrator` | `fo` | `wto` |
-| `flock tab-setup`    | `fs` | `wts` |
+| Subcommand        | `f*` | `wt*` |
+|-------------------|------|-------|
+| `flock new`       | `fn` | `wtn` |
+| `flock delete`    | `fd` | `wtd` |
+| `flock tab-setup` | `fs` | `wts` |
 
 `wt*` abbreviations are retained for backward compatibility.
 
 ## Configuration
 
-| Variable                  | Default              | Purpose                                    |
-|---------------------------|----------------------|--------------------------------------------|
-| `$FLOCK_ORCHESTRATOR_DIR` | `~/Development/dalp` | Repo opened by `flock orchestrator`        |
-| `$FLOCK_REMOTE_HOST`      | `daystrom`           | Remote host used by `zjr` (remote zellij) |
+| Variable             | Default    | Purpose                                    |
+|----------------------|------------|--------------------------------------------|
+| `$FLOCK_REMOTE_HOST` | `daystrom` | Remote host used by `zjr` (remote zellij) |
 
 Set these in your `config.fish` before the values are first used:
 
 ```fish
-set -gx FLOCK_ORCHESTRATOR_DIR ~/work/myrepo
 set -gx FLOCK_REMOTE_HOST myserver
 ```
 
