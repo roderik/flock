@@ -1,0 +1,21 @@
+// Reference global zellij config — copy to ~/.config/zellij/config.kdl and adjust as needed
+// Full docs: https://zellij.dev/documentation/configuration
+
+keybinds {
+    normal {
+        // Use Ctrl-a as prefix (screen/tmux-style)
+        bind "Ctrl a" { SwitchToMode "Tmux"; }
+    }
+}
+
+// Default layout to open when starting zellij without arguments
+// default_layout "flock"
+
+// Copy to clipboard on select
+copy_on_select true
+
+// Mouse support
+mouse_mode true
+
+// Scroll buffer size
+scroll_buffer_size 10000
