@@ -74,12 +74,14 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
         if test -n "$lg_surface"
             cmux resize-pane --workspace "$ws_id" --pane "$main_pane" -R --amount 200 2>/dev/null
             cmux send --workspace "$ws_id" --surface "$lg_surface" "cd '$workdir' && lazygit\n" 2>/dev/null
+            cmux rename-tab --workspace "$ws_id" --surface "$lg_surface" "Git" 2>/dev/null
         end
 
         set -l term_surface (cmux new-split down --workspace "$ws_id" --surface "$main_surface" 2>/dev/null | grep -oE 'surface:[0-9]+' | head -1)
         if test -n "$term_surface"
             cmux resize-pane --workspace "$ws_id" --pane "$main_pane" -D --amount 500 2>/dev/null
             cmux send --workspace "$ws_id" --surface "$term_surface" "cd '$workdir'\n" 2>/dev/null
+            cmux rename-tab --workspace "$ws_id" --surface "$term_surface" "Terminal" 2>/dev/null
         end
 
         cmux focus-pane --pane "$main_pane" --workspace "$ws_id" 2>/dev/null
