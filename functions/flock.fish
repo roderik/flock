@@ -14,7 +14,7 @@ function flock --description "Git worktree manager with integrated workspace set
             echo ""
             echo "Subcommands:"
             echo "  new [branch|#PR|TICKET]   Create or open a worktree"
-            echo "  delete                    Delete a worktree via fzf picker"
+            echo "  delete [--all]            Delete a worktree (or all worktrees)"
             echo "  tab-setup                 Set up a 3-pane workspace in the current dir"
         case '*'
             echo "flock: unknown subcommand '$subcommand'" >&2
