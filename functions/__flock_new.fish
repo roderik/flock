@@ -1,5 +1,8 @@
 function __flock_new --description "Open a worktree — auto-detects branch, Linear ticket, GitHub PR, or existing worktree"
+    argparse 'x' -- $argv 2>/dev/null
     set -l input $argv[1]
+    set -l codex_flag
+    set -q _flag_x; and set codex_flag -x
 
     set -l repo_root (__flock_repo_root)
     or return
@@ -16,7 +19,7 @@ function __flock_new --description "Open a worktree — auto-detects branch, Lin
         set ref (echo $selection | cut -f2)
         switch $kind
             case worktree
-                __flock_new_existing $repo_root $ref
+                __flock_new_existing $repo_root $ref $codex_flag
                 return $status
             case pr
                 set mode pr
@@ -40,11 +43,11 @@ function __flock_new --description "Open a worktree — auto-detects branch, Lin
 
     switch $mode
         case branch
-            __flock_new_branch $repo_root $ref
+            __flock_new_branch $repo_root $ref $codex_flag
         case linear
-            __flock_new_linear $repo_root $ref
+            __flock_new_linear $repo_root $ref $codex_flag
         case pr
-            __flock_new_pr $repo_root $ref
+            __flock_new_pr $repo_root $ref $codex_flag
     end
 end
 
@@ -81,16 +84,20 @@ end
 function __flock_new_existing
     set -l repo_root $argv[1]
     set -l target $argv[2]
+    set -l codex_flag $argv[3]
 
     set -l branch_name (git -C $target branch --show-current 2>/dev/null)
     set -l short_name (string replace -r '^[^/]+/' '' -- $branch_name | string sub -l 20)
 
-    __flock_tab_setup --name "$short_name" --dir "$target"
+    set -l flags --name "$short_name" --dir "$target"
+    test -n "$codex_flag"; and set -a flags $codex_flag
+    __flock_tab_setup $flags
 end
 
 function __flock_new_branch
     set -l repo_root $argv[1]
     set -l branch $argv[2]
+    set -l codex_flag $argv[3]
     set -l original_dir (pwd)
 
     cd $repo_root; and git fetch origin main; and wt switch --create --base origin/main $branch
@@ -100,13 +107,16 @@ function __flock_new_branch
     cd $original_dir
 
     set -l short_branch (string replace -r '^[^/]+/' '' -- $branch | string sub -l 20)
-    __flock_tab_setup --name "$short_branch" --dir "$worktree_path"
+    set -l flags --name "$short_branch" --dir "$worktree_path"
+    test -n "$codex_flag"; and set -a flags $codex_flag
+    __flock_tab_setup $flags
     echo "Worktree created: $worktree_path"
 end
 
 function __flock_new_linear
     set -l repo_root $argv[1]
     set -l ticket $argv[2]
+    set -l codex_flag $argv[3]
 
     set -l json (linear issue view $ticket --json 2>&1)
     or begin
@@ -133,13 +143,16 @@ function __flock_new_linear
     set -l worktree_path (pwd)
     cd $original_dir
 
-    __flock_tab_setup --name "$ticket" --dir "$worktree_path"
+    set -l flags --name "$ticket" --dir "$worktree_path"
+    test -n "$codex_flag"; and set -a flags $codex_flag
+    __flock_tab_setup $flags
     echo "$ticket checked out to: $worktree_path"
 end
 
 function __flock_new_pr
     set -l repo_root $argv[1]
     set -l pr $argv[2]
+    set -l codex_flag $argv[3]
 
     set -l original_dir (pwd)
 
@@ -151,6 +164,8 @@ function __flock_new_pr
     set -l worktree_path (pwd)
     cd $original_dir
 
-    __flock_tab_setup --name "#$pr" --dir "$worktree_path"
+    set -l flags --name "#$pr" --dir "$worktree_path"
+    test -n "$codex_flag"; and set -a flags $codex_flag
+    __flock_tab_setup $flags
     echo "PR #$pr checked out to: $worktree_path"
 end
