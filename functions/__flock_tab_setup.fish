@@ -1,9 +1,13 @@
 function __flock_tab_setup --description "Open a new workspace tab scoped to a directory — auto-detects zellij/cmux/bare"
     set -l tab_name ""
     set -l workdir (pwd)
+    set -l cli "claude --dangerously-skip-permissions"
 
-    argparse 'name=' 'dir=' -- $argv 2>/dev/null
+    argparse 'x' 'name=' 'dir=' -- $argv 2>/dev/null
 
+    if set -q _flag_x
+        set cli "codex --full-auto"
+    end
     set -q _flag_name; and set tab_name $_flag_name
     set -q _flag_dir; and set workdir $_flag_dir
 
@@ -15,6 +19,9 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
         if test -n "$tab_name"
             zellij action rename-tab "$tab_name" 2>/dev/null
         end
+
+        zellij action write-chars "$cli"
+        zellij action write 10
         return 0
     end
 
@@ -61,9 +68,11 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
         end
 
         cmux focus-pane --pane "$main_pane" --workspace "$ws_id" 2>/dev/null
+        cmux send --workspace "$ws_id" --surface "$main_surface" "$cli\n" 2>/dev/null
         return 0
     end
 
     # ── Bare terminal ────────────────────────────────────────────────────
     cd "$workdir"
+    eval $cli
 end
