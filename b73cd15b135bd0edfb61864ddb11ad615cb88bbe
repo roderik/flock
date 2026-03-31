@@ -1,0 +1,25 @@
+functions/__flock_new.fish
+  6415d3559acff1ca 19,43,45,47,88,103,136,154
+functions/__flock_tab_setup.fish
+  6415d3559acff1ca 5
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.1.23",
+  "base_commit_sha": "b73cd15b135bd0edfb61864ddb11ad615cb88bbe",
+  "prompts": {
+    "6415d3559acff1ca": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "fa52d05c-4383-4ebb-a283-9c80c679d02e",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Roderik van der Veer <roderik@settlemint.com>",
+      "messages": [],
+      "total_additions": 11,
+      "total_deletions": 65,
+      "accepted_lines": 9,
+      "overriden_lines": 0
+    }
+  }
+}
