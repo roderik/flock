@@ -9,5 +9,8 @@ complete -c flock -f -n "not __fish_seen_subcommand_from $subcommands" -a tab-se
 # flock new options
 complete -c flock -n "__fish_seen_subcommand_from new" -s x -d "Use codex instead of Claude"
 
+# flock tab-setup options
+complete -c flock -n "__fish_seen_subcommand_from tab-setup" -s x -d "Use codex instead of Claude"
+
 # flock delete options
 complete -c flock -n "__fish_seen_subcommand_from delete" -l all -s a -d "Delete all worktrees"
