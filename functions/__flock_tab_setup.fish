@@ -1,26 +1,11 @@
 function __flock_tab_setup --description "Open a new workspace tab scoped to a directory — auto-detects zellij/cmux/bare"
-    set -l cli "claude --dangerously-skip-permissions"
-    set -l prompt ""
     set -l tab_name ""
     set -l workdir (pwd)
-    set -l codex false
 
-    argparse 'x' 'prompt=' 'name=' 'dir=' -- $argv 2>/dev/null
+    argparse 'name=' 'dir=' -- $argv 2>/dev/null
 
-    if set -q _flag_x
-        set cli "codex --full-auto"
-        set codex true
-    end
-    set -q _flag_prompt; and set prompt $_flag_prompt
     set -q _flag_name; and set tab_name $_flag_name
     set -q _flag_dir; and set workdir $_flag_dir
-
-    set -l launch_cmd
-    if test -n "$prompt"
-        set launch_cmd "$cli '$prompt'"
-    else
-        set launch_cmd "$cli"
-    end
 
     # ── Zellij ───────────────────────────────────────────────────────────
     if test -n "$ZELLIJ"
@@ -29,15 +14,6 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
 
         if test -n "$tab_name"
             zellij action rename-tab "$tab_name" 2>/dev/null
-        end
-
-        zellij action write-chars "$launch_cmd"
-        zellij action write 10
-
-        if test "$codex" = true; and test -n "$prompt"
-            sleep 3
-            zellij action write-chars "$prompt"
-            zellij action write 10
         end
         return 0
     end
@@ -85,17 +61,9 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
         end
 
         cmux focus-pane --pane "$main_pane" --workspace "$ws_id" 2>/dev/null
-        cmux send --workspace "$ws_id" --surface "$main_surface" "$launch_cmd\n" 2>/dev/null
-
-        if test "$codex" = true; and test -n "$prompt"
-            sleep 3
-            cmux send --workspace "$ws_id" --surface "$main_surface" "$prompt\n" 2>/dev/null
-        end
         return 0
     end
 
     # ── Bare terminal ────────────────────────────────────────────────────
     cd "$workdir"
-    echo "Launching: $launch_cmd"
-    eval $launch_cmd
 end
