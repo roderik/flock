@@ -15,8 +15,9 @@ function __flock_new --description "Open a worktree — auto-detects branch, Lin
         set -l selection (__flock_new_combined_picker $repo_root)
         test -z "$selection"; and return
 
-        set -l kind (echo $selection | cut -f1)
-        set ref (echo $selection | cut -f2)
+        set -l parts (string split \t -- $selection)
+        set -l kind $parts[1]
+        set ref $parts[2]
         switch $kind
             case worktree
                 __flock_new_existing $repo_root $ref $codex_flag
@@ -56,16 +57,17 @@ function __flock_new_combined_picker
 
     set -l entries
     for line in (git -C $repo_root worktree list | tail -n +2)
-        set -l wt_path (echo $line | awk '{print $1}')
-        set -l wt_branch (echo $line | awk '{print $3}' | tr -d '[]')
+        set -l wt_path (string match -r '^\S+' -- $line)
+        set -l wt_branch (string match -r '\[(.+)\]' -- $line)[2]
         set -a entries "worktree\t$wt_path\t📂 $wt_branch  ($wt_path)"
     end
 
     for line in (cd $repo_root; and gh pr list --state open --limit 30 \
         --json number,title,author \
         --template '{{range .}}{{.number}}\t{{.title}} ({{.author.login}}){{"\n"}}{{end}}' 2>/dev/null)
-        set -l pr_num (echo $line | cut -f1)
-        set -l pr_desc (echo $line | cut -f2)
+        set -l parts (string split \t -- $line)
+        set -l pr_num $parts[1]
+        set -l pr_desc $parts[2]
         set -a entries "pr\t$pr_num\t🔀 #$pr_num  $pr_desc"
     end
 
@@ -77,7 +79,7 @@ function __flock_new_combined_picker
     set -l selected (printf '%s\n' $entries | \
         fzf --height=40% --reverse --header "Worktrees & PRs" \
             --delimiter='\t' --with-nth=3 | \
-        cut -f1,2)
+        string replace -r '\t[^\t]*$' '')
     echo $selected
 end
 
@@ -101,7 +103,7 @@ function __flock_new_branch
     set -l original_dir (pwd)
 
     cd $repo_root; and git fetch origin main; and wt switch --create --base origin/main $branch
-    or begin; cd $original_dir; return 1; end
+    or { cd $original_dir; return 1; }
 
     set -l worktree_path (pwd)
     cd $original_dir
@@ -119,10 +121,10 @@ function __flock_new_linear
     set -l codex_flag $argv[3]
 
     set -l json (linear issue view $ticket --json 2>&1)
-    or begin
+    or {
         echo "Error: could not fetch Linear issue $ticket"
         return 1
-    end
+    }
 
     set -l title (echo $json | jq -r '.title' 2>/dev/null)
     set -l branch (echo $json | jq -r '.branchName' 2>/dev/null)
@@ -138,7 +140,7 @@ function __flock_new_linear
     set -l original_dir (pwd)
 
     cd $repo_root; and git fetch origin main; and wt switch --create --base origin/main $branch
-    or begin; cd $original_dir; return 1; end
+    or { cd $original_dir; return 1; }
 
     set -l worktree_path (pwd)
     cd $original_dir
@@ -157,7 +159,7 @@ function __flock_new_pr
     set -l original_dir (pwd)
 
     cd $repo_root; and git fetch origin main; and wt switch "pr:$pr"
-    or begin; cd $original_dir; return 1; end
+    or { cd $original_dir; return 1; }
 
     zic 2>/dev/null
 

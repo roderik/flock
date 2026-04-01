@@ -1,5 +1,5 @@
 function __flock_repo_root --description "Find git repo root or pick from known dirs via fzf"
-    set -l root (git worktree list --porcelain 2>/dev/null | head -1 | sed 's/^worktree //')
+    set -l root (git worktree list --porcelain 2>/dev/null | string replace -rf '^worktree ' '')[1]
     if test -n "$root"
         echo $root
         return 0

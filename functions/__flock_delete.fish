@@ -3,6 +3,12 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
     or return
     test -z "$repo_root"; and return
 
+    # Capture the originating tab ID so we close the right tab even if focus moves
+    set -l zellij_tab_id
+    if test -n "$ZELLIJ"
+        set zellij_tab_id (zellij action list-panes --json 2>/dev/null | jq -r '.[] | select(.is_focused) | .tab_id // empty' 2>/dev/null)
+    end
+
     # ── Delete all mode ──────────────────────────────────────────────────
     if test "$argv[1]" = --all -o "$argv[1]" = -a
         set -l worktrees (git -C $repo_root worktree list | tail -n +2)
@@ -21,8 +27,8 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
         cd $repo_root
 
         for line in $worktrees
-            set -l wt_path (echo $line | awk '{print $1}')
-            set -l branch (echo $line | awk '{print $3}' | tr -d '[]')
+            set -l wt_path (string match -r '^\S+' -- $line)
+            set -l branch (string match -r '\[(.+)\]' -- $line)[2]
             echo "Removing: $branch ($wt_path)"
             git -C $repo_root worktree remove --force "$wt_path" 2>/dev/null
             git -C $repo_root branch -D $branch 2>/dev/null
@@ -30,7 +36,11 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
         git -C $repo_root remote prune origin 2>/dev/null
 
         if test -n "$ZELLIJ"
-            zellij action close-tab 2>/dev/null
+            if test -n "$zellij_tab_id"
+                zellij action close-tab --tab-id $zellij_tab_id 2>/dev/null
+            else
+                zellij action close-tab 2>/dev/null
+            end
         else if set -q CMUX_WORKSPACE_ID
             cmux close-workspace 2>/dev/null
         end
@@ -43,7 +53,7 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
     set -l current_line
     set -l other_lines
     for line in (git -C $repo_root worktree list | tail -n +2)
-        set -l wt_branch (echo $line | awk '{print $3}' | tr -d '[]')
+        set -l wt_branch (string match -r '\[(.+)\]' -- $line)[2]
         if test "$wt_branch" = "$current_branch"
             set current_line "$line (current)"
         else
@@ -51,14 +61,15 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
         end
     end
 
-    set -l target (begin
+    set -l target ({
         test -n "$current_line"; and echo $current_line
         for line in $other_lines; echo $line; end
-    end | fzf --height=40% --reverse --header "Delete which worktree?" \
-        | sed 's/ (current)$//' | awk '{print $1}')
+    } | fzf --height=40% --reverse --header "Delete which worktree?" \
+        | string replace -r ' \(current\)$' '' | string match -r '^\S+')
     test -z "$target"; and return
 
-    set -l branch (git -C $repo_root worktree list | grep "^$target " | awk '{print $3}' | tr -d '[]')
+    set -l target_re (string escape --style=regex -- $target)
+    set -l branch (git -C $repo_root worktree list | string match -r "^$target_re\\s" | string match -r '\[(.+)\]')[2]
     set -l is_current false
 
     if test "$PWD" = "$target"; or string match -q "$target/*" $PWD
@@ -73,7 +84,11 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
 
     if test "$is_current" = true
         if test -n "$ZELLIJ"
-            zellij action close-tab 2>/dev/null
+            if test -n "$zellij_tab_id"
+                zellij action close-tab --tab-id $zellij_tab_id 2>/dev/null
+            else
+                zellij action close-tab 2>/dev/null
+            end
         else if set -q CMUX_WORKSPACE_ID
             cmux close-workspace 2>/dev/null
         end
