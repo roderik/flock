@@ -1,0 +1,25 @@
+functions/__flock_tab_setup.fish
+  6780aa58ba54ece1 45-52
+functions/__flock_zed_link.fish
+  6780aa58ba54ece1 1-18
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.3",
+  "base_commit_sha": "e8e093ba22080649392eb8bea214a1b9069b5f6b",
+  "prompts": {
+    "6780aa58ba54ece1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f85174b6-fabf-406e-ac55-17039e5d5fbf",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Roderik van der Veer",
+      "messages": [],
+      "total_additions": 31,
+      "total_deletions": 2,
+      "accepted_lines": 26,
+      "overriden_lines": 0
+    }
+  }
+}
