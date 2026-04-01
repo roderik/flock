@@ -3,7 +3,7 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
     set -l workdir (pwd)
     set -l cli claude --dangerously-skip-permissions
 
-    argparse 'x' 'name=' 'dir=' -- $argv 2>/dev/null
+    argparse 'x' 'name=' 'dir=' 'prompt=' -- $argv 2>/dev/null
 
     if set -q _flag_x
         set cli codex --full-auto
@@ -12,6 +12,16 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
     set -q _flag_dir; and set workdir $_flag_dir
 
     set -l cli_str (string join " " $cli)
+
+    # Build prompt string with / (claude) or $ (codex) prefix
+    set -l prompt_str ""
+    if set -q _flag_prompt; and test -n "$_flag_prompt"
+        if set -q _flag_x
+            set prompt_str '$'"$_flag_prompt"
+        else
+            set prompt_str "/$_flag_prompt"
+        end
+    end
 
     # ── Zellij ───────────────────────────────────────────────────────────
     if test -n "$ZELLIJ"
@@ -24,6 +34,11 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
 
         zellij action write-chars "$cli_str"
         zellij action write 10
+
+        if test -n "$prompt_str"
+            sleep 3
+            zellij action write-chars "$prompt_str"
+        end
         return 0
     end
 
@@ -71,6 +86,11 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
 
         cmux focus-pane --pane "$main_pane" --workspace "$ws_id" 2>/dev/null
         cmux send --workspace "$ws_id" --surface "$main_surface" "$cli_str\n" 2>/dev/null
+
+        if test -n "$prompt_str"
+            sleep 3
+            cmux send --workspace "$ws_id" --surface "$main_surface" "$prompt_str" 2>/dev/null
+        end
         return 0
     end
 
