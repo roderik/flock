@@ -10,3 +10,25 @@ end
     echo $output | string match -q "*no remote host*"
     @status 0
 end
+
+@test "zjr strips ANSI codes and CR from session names when attaching"
+    set -x FLOCK_REMOTE_HOST testhost
+
+    function ssh
+        if string match -q "*list-sessions*" -- $argv
+            printf '\e[32madventurous-tambourine\e[0m [Created 1h ago]\r\n'
+            return 0
+        end
+        echo $argv >/tmp/_zjr_test_attach_cmd
+        return 0
+    end
+
+    echo 1 | zjr >/dev/null 2>&1
+
+    set -l cmd (cat /tmp/_zjr_test_attach_cmd)
+    rm -f /tmp/_zjr_test_attach_cmd
+    functions -e ssh
+
+    string match -q "*zellij attach 'adventurous-tambourine'*" -- $cmd
+    @status 0
+end

@@ -10,7 +10,8 @@ function zjr --description "Start or attach to a zellij session on a remote host
     end
 
     # Check for existing sessions on the remote host
-    set -l sessions (ssh $host "zellij list-sessions 2>/dev/null" | string collect)
+    # Strip ANSI escape codes and carriage returns from remote output
+    set -l sessions (ssh $host "zellij list-sessions 2>/dev/null" | string replace -ra '\e\[[0-9;]*m' '' | string replace -ra '\r' '' | string collect)
 
     if test -n "$sessions"
         set -l session_lines (string split \n -- $sessions)
