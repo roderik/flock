@@ -8,6 +8,11 @@ keybinds {
     }
 }
 
+// Detach instead of quit when terminal closes (e.g. SSH disconnect)
+// Keeps sessions alive for reattaching — without this, zellij kills
+// the session and resurrects from saved state, losing running processes
+on_force_close "detach"
+
 // Default layout to open when starting zellij without arguments
 // default_layout "flock"
 
