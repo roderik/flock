@@ -1,0 +1,33 @@
+functions/fish_tab_title.fish
+  6780aa58ba54ece1 1-12
+functions/__flock_repo_root.fish
+  6780aa58ba54ece1 2
+functions/__flock_new.fish
+  6780aa58ba54ece1 18-20,60-61,68-70,82,106,124,127,143,162
+.github/workflows/ci.yml
+  6780aa58ba54ece1 16
+functions/__flock_delete.fish
+  6780aa58ba54ece1 6-11,30-31,39-43,56,64,67-68,71,86-90
+.github/workflows/release.yml
+  6780aa58ba54ece1 19
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.3",
+  "base_commit_sha": "0cfc21f3a808c8eec6f974639e6b65e5ee73445e",
+  "prompts": {
+    "6780aa58ba54ece1": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f85174b6-fabf-406e-ac55-17039e5d5fbf",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Roderik van der Veer",
+      "messages": [],
+      "total_additions": 52,
+      "total_deletions": 24,
+      "accepted_lines": 52,
+      "overriden_lines": 0
+    }
+  }
+}
