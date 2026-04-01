@@ -34,7 +34,7 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
 
         # Target the Main pane explicitly so input goes to the right place
         set -l pane_target
-        set -l main_id (zellij action list-panes --json 2>/dev/null | jq -r 'first(.[] | select(.title == "Main" or .name == "Main")) | .pane_id // .id' 2>/dev/null)
+        set -l main_id (zellij action list-panes --json 2>/dev/null | jq -r 'first(.[] | select(.title == "Main" or .name == "Main")) | .pane_id // .id // empty' 2>/dev/null)
         if test -n "$main_id"
             set pane_target --pane-id $main_id
         end
