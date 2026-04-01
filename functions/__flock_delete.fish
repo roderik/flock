@@ -65,10 +65,11 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
         test -n "$current_line"; and echo $current_line
         for line in $other_lines; echo $line; end
     } | fzf --height=40% --reverse --header "Delete which worktree?" \
-        | string replace ' (current)' '' | string match -r '^\S+')
+        | string replace -r ' \(current\)$' '' | string match -r '^\S+')
     test -z "$target"; and return
 
-    set -l branch (git -C $repo_root worktree list | string match "$target *" | string match -r '\[(.+)\]')[2]
+    set -l target_re (string escape --style=regex -- $target)
+    set -l branch (git -C $repo_root worktree list | string match -r "^$target_re\\s" | string match -r '\[(.+)\]')[2]
     set -l is_current false
 
     if test "$PWD" = "$target"; or string match -q "$target/*" $PWD
