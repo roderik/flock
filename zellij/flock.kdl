@@ -15,11 +15,11 @@ layout {
 
     tab {
         pane split_direction="vertical" {
-            pane split_direction="horizontal" size="70%" {
-                pane size="80%" focus=true name="Main"
-                pane size="20%" name="Terminal"
+            pane size="70%" focus=true name="Main"
+            pane stacked=true size="30%" {
+                pane name="Terminal"
+                pane name="Git" command="lazygit"
             }
-            pane size="30%" name="Git" command="lazygit"
         }
     }
 }

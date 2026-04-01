@@ -143,7 +143,7 @@ function __flock_new_linear
     set -l worktree_path (pwd)
     cd $original_dir
 
-    set -l flags --name "$ticket" --dir "$worktree_path"
+    set -l flags --name "$ticket" --dir "$worktree_path" --prompt "execute $ticket"
     test -n "$codex_flag"; and set -a flags $codex_flag
     __flock_tab_setup $flags
     echo "$ticket checked out to: $worktree_path"
@@ -164,7 +164,7 @@ function __flock_new_pr
     set -l worktree_path (pwd)
     cd $original_dir
 
-    set -l flags --name "#$pr" --dir "$worktree_path"
+    set -l flags --name "#$pr" --dir "$worktree_path" --prompt bellwether
     test -n "$codex_flag"; and set -a flags $codex_flag
     __flock_tab_setup $flags
     echo "PR #$pr checked out to: $worktree_path"
