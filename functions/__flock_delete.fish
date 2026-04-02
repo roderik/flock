@@ -24,6 +24,14 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
         read -P "Confirm? [y/N] " -l confirm
         test "$confirm" = y -o "$confirm" = Y; or return
 
+        # Close Zellij tabs for all worktrees (stop running processes)
+        if test -n "$ZELLIJ"
+            for line in $worktrees
+                set -l branch (string match -r '\[(.+)\]' -- $line)[2]
+                __flock_close_worktree_tab "$branch" "$zellij_tab_id"
+            end
+        end
+
         cd $repo_root
 
         for line in $worktrees
@@ -35,6 +43,7 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
         end
         git -C $repo_root remote prune origin 2>/dev/null
 
+        # Close the current tab last (this kills our shell)
         if test -n "$ZELLIJ"
             if test -n "$zellij_tab_id"
                 zellij action close-tab-by-id $zellij_tab_id 2>/dev/null
@@ -75,6 +84,11 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
     if test "$PWD" = "$target"; or string match -q "$target/*" $PWD
         set is_current true
         cd $repo_root
+    end
+
+    # Close the Zellij tab for this worktree (stop running processes)
+    if test -n "$ZELLIJ"; and test "$is_current" = false
+        __flock_close_worktree_tab "$branch" "$zellij_tab_id"
     end
 
     echo "Removing worktree: $branch ($target)"
