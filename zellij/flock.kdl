@@ -19,6 +19,7 @@ layout {
             pane stacked=true size="30%" {
                 pane name="Terminal"
                 pane name="Git" command="lazygit"
+                pane name="K9s" command="k9s"
             }
         }
     }

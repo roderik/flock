@@ -33,7 +33,7 @@ function zjr --description "Start or attach to a zellij session on a remote host
             read -P "Select session: " choice
 
             if test "$choice" = n
-                ssh -t $host "zellij"
+                ssh -t $host "zellij --layout flock-dashboard"
                 return
             end
 
@@ -51,5 +51,5 @@ function zjr --description "Start or attach to a zellij session on a remote host
     end
 
     # No existing sessions — start a new one
-    ssh -t $host "zellij"
+    ssh -t $host "zellij --layout flock-dashboard"
 end
