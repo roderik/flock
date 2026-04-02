@@ -1,0 +1,29 @@
+README.md
+  016a9845700647fc 7,17,22,24-25,32-33,52,55-56,61,65,68-76,79-84,90-92,98,100,102,104,106-119
+functions/__flock_tab_setup.fish
+  016a9845700647fc 35-39,43
+functions/__flock_delete.fish
+  016a9845700647fc 27-34,46,89-93
+functions/__flock_close_worktree_tab.fish
+  016a9845700647fc 1-22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.3",
+  "base_commit_sha": "8757add5b78fd5e073a6ba41dc5d09eb4d15c4ac",
+  "prompts": {
+    "016a9845700647fc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f09f28e4-4c7e-4c2b-85b7-91350c8214ed",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Roderik van der Veer",
+      "messages": [],
+      "total_additions": 90,
+      "total_deletions": 37,
+      "accepted_lines": 90,
+      "overriden_lines": 0
+    }
+  }
+}
