@@ -1,0 +1,25 @@
+zellij/flock.kdl
+  c77b20100dbe17f9 2
+conf.d/flock.fish
+  c77b20100dbe17f9 11-12,15,28-31,37
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.3",
+  "base_commit_sha": "f1a96000e5acf4212505ee26dc2e6efd679ebd45",
+  "prompts": {
+    "c77b20100dbe17f9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "84fe9cdf-2a78-4695-a14a-e0d37abedde4",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Roderik van der Veer",
+      "messages": [],
+      "total_additions": 9,
+      "total_deletions": 9,
+      "accepted_lines": 9,
+      "overriden_lines": 0
+    }
+  }
+}
