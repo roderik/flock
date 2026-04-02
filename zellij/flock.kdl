@@ -18,7 +18,7 @@ layout {
             pane stacked=true size="30%" {
                 pane name="Terminal"
                 pane name="Zed" focus=true command="fish" {
-                    args "-c" "__flock_zed_link (pwd); sleep infinity"
+                    args "-c" "__flock_zed_link (pwd); read"
                 }
                 pane name="Git" command="lazygit"
                 pane name="K9s" command="k9s"
