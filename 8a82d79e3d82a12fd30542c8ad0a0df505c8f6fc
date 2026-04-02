@@ -1,0 +1,25 @@
+functions/__flock_delete.fish
+  c77b20100dbe17f9 9,40,88
+tests/flock_delete.fish
+  c77b20100dbe17f9 1,11-12,15,33,37,50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.3",
+  "base_commit_sha": "8a82d79e3d82a12fd30542c8ad0a0df505c8f6fc",
+  "prompts": {
+    "c77b20100dbe17f9": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "84fe9cdf-2a78-4695-a14a-e0d37abedde4",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Roderik van der Veer",
+      "messages": [],
+      "total_additions": 10,
+      "total_deletions": 10,
+      "accepted_lines": 10,
+      "overriden_lines": 0
+    }
+  }
+}
