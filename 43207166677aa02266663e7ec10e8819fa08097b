@@ -1,0 +1,25 @@
+zellij/flock.kdl
+  016a9845700647fc 21
+conf.d/flock.fish
+  016a9845700647fc 14,34
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.2.3",
+  "base_commit_sha": "43207166677aa02266663e7ec10e8819fa08097b",
+  "prompts": {
+    "016a9845700647fc": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "f09f28e4-4c7e-4c2b-85b7-91350c8214ed",
+        "model": "claude-opus-4-6"
+      },
+      "human_author": "Roderik van der Veer",
+      "messages": [],
+      "total_additions": 3,
+      "total_deletions": 3,
+      "accepted_lines": 3,
+      "overriden_lines": 0
+    }
+  }
+}
