@@ -105,9 +105,9 @@ Used by `flock new` and `flock tab-setup` for each worktree tab:
 
 | Area | Pane | Description |
 |------|------|-------------|
-| Left 70% | **Main** (focused) | AI assistant (Claude or Codex) |
-| Right 30% (stacked) | **Terminal** | Plain shell |
-| | **Zed** | Clickable `zed://` deep link to open worktree in Zed |
+| Left 70% (focused) | **Main** | AI assistant (Claude or Codex) |
+| Right 30% (stacked) | **Zed** | Clickable `zed://` deep link to open worktree in Zed |
+| | **Terminal** | Plain shell |
 | | **Git** | `lazygit` |
 | | **K9s** | `k9s` Kubernetes monitor |
 

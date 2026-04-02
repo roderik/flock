@@ -29,10 +29,10 @@ if not test -f $_flock_layout; or not head -n 1 -- $_flock_layout 2>/dev/null | 
         '        pane split_direction="vertical" {' \
         '            pane size="70%" focus=true name="Main"' \
         '            pane stacked=true size="30%" {' \
-        '                pane name="Terminal"' \
-        '                pane name="Zed" focus=true command="fish" {' \
+        '                pane name="Zed" command="fish" {' \
         '                    args "-c" "__flock_zed_link (pwd); read"' \
         '                }' \
+        '                pane name="Terminal"' \
         '                pane name="Git" command="lazygit"' \
         '                pane name="K9s" command="k9s"' \
         '            }' \
