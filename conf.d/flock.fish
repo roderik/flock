@@ -4,13 +4,15 @@
 # ── Configurable defaults ─────────────────────────────────────────────────
 set -q FLOCK_REMOTE_HOST; or set -gx FLOCK_REMOTE_HOST daystrom
 
-# ── Zellij layout ─────────────────────────────────────────────────────────
+# ── Zellij layouts ────────────────────────────────────────────────────────
 # Fisher copies conf.d/ files, so we can't rely on a relative symlink to
-# the source repo.  Write the layout directly if it's missing or outdated.
+# the source repo.  Write the layouts directly if missing or outdated.
+mkdir -p ~/.config/zellij/layouts
+
+# Flock worktree tab layout
 set -l _flock_layout ~/.config/zellij/layouts/flock.kdl
-set -l _flock_layout_v '// flock layout v2'
-if not test -f $_flock_layout; or not head -1 $_flock_layout | string match -q "$_flock_layout_v*"
-    mkdir -p ~/.config/zellij/layouts
+set -l _flock_layout_v '// flock layout v3'
+if not test -f $_flock_layout; or not head -n 1 -- $_flock_layout 2>/dev/null | string match -q "$_flock_layout_v*"
     printf '%s\n' \
         "$_flock_layout_v" \
         'layout {' \
@@ -29,12 +31,39 @@ if not test -f $_flock_layout; or not head -1 $_flock_layout | string match -q "
         '            pane stacked=true size="30%" {' \
         '                pane name="Terminal"' \
         '                pane name="Git" command="lazygit"' \
+        '                pane name="K9s" command="k9s"' \
         '            }' \
         '        }' \
         '    }' \
         '}' >$_flock_layout
 end
 set -e _flock_layout _flock_layout_v
+
+# Dashboard layout (used by zj/zjr for new sessions)
+set -l _dash_layout ~/.config/zellij/layouts/flock-dashboard.kdl
+set -l _dash_layout_v '// flock dashboard v1'
+if not test -f $_dash_layout; or not head -n 1 -- $_dash_layout 2>/dev/null | string match -q "$_dash_layout_v*"
+    printf '%s\n' \
+        "$_dash_layout_v" \
+        'layout {' \
+        '    default_tab_template {' \
+        '        pane size=1 borderless=true {' \
+        '            plugin location="zellij:tab-bar"' \
+        '        }' \
+        '        children' \
+        '        pane size=1 borderless=true {' \
+        '            plugin location="zellij:status-bar"' \
+        '        }' \
+        '    }' \
+        '    tab name="Dashboard" {' \
+        '        pane split_direction="vertical" {' \
+        '            pane size="50%" command="btop"' \
+        '            pane size="50%" focus=true' \
+        '        }' \
+        '    }' \
+        '}' >$_dash_layout
+end
+set -e _dash_layout _dash_layout_v
 
 # ── Abbreviations ─────────────────────────────────────────────────────────
 # f* (new short form)

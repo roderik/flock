@@ -1,0 +1,21 @@
+// flock dashboard v1
+// Auto-installed by conf.d/flock.fish on shell init
+
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=1 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="Dashboard" {
+        pane split_direction="vertical" {
+            pane size="50%" command="btop"
+            pane size="50%" focus=true
+        }
+    }
+}
