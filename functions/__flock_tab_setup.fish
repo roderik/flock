@@ -42,14 +42,6 @@ function __flock_tab_setup --description "Open a new workspace tab scoped to a d
         zellij action write-chars $pane_target "$cli_str"
         zellij action send-keys $pane_target Enter
 
-        # Print a clickable zed:// link in the Terminal pane
-        set -l term_id (zellij action list-panes --json 2>/dev/null | jq -r 'first(.[] | select(.title == "Terminal" or .name == "Terminal")) | .pane_id // .id // empty' 2>/dev/null)
-        if test -n "$term_id"
-            set -l zed_cmd "__flock_zed_link '$workdir'"
-            zellij action write-chars --pane-id $term_id "$zed_cmd"
-            zellij action send-keys --pane-id $term_id Enter
-        end
-
         if test -n "$prompt_str"
             sleep 3
             zellij action write-chars $pane_target "$prompt_str"
