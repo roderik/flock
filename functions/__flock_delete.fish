@@ -6,7 +6,7 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
     # Capture the originating tab ID so we close the right tab even if focus moves
     set -l zellij_tab_id
     if test -n "$ZELLIJ"
-        set zellij_tab_id (zellij action list-panes --json 2>/dev/null | jq -r '.[] | select(.is_focused) | .tab_id // empty' 2>/dev/null)
+        set zellij_tab_id (zellij action current-tab-info --json 2>/dev/null | jq -r '.tab_id // empty' 2>/dev/null)
     end
 
     # ── Delete all mode ──────────────────────────────────────────────────
@@ -37,7 +37,7 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
 
         if test -n "$ZELLIJ"
             if test -n "$zellij_tab_id"
-                zellij action close-tab --tab-id $zellij_tab_id 2>/dev/null
+                zellij action close-tab-by-id $zellij_tab_id 2>/dev/null
             else
                 zellij action close-tab 2>/dev/null
             end
@@ -85,7 +85,7 @@ function __flock_delete --description "Delete a worktree via fzf picker (current
     if test "$is_current" = true
         if test -n "$ZELLIJ"
             if test -n "$zellij_tab_id"
-                zellij action close-tab --tab-id $zellij_tab_id 2>/dev/null
+                zellij action close-tab-by-id $zellij_tab_id 2>/dev/null
             else
                 zellij action close-tab 2>/dev/null
             end
