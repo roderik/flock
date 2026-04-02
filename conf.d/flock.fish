@@ -11,7 +11,7 @@ mkdir -p ~/.config/zellij/layouts
 
 # Flock worktree tab layout
 set -l _flock_layout ~/.config/zellij/layouts/flock.kdl
-set -l _flock_layout_v '// flock layout v3'
+set -l _flock_layout_v '// flock layout v4'
 if not test -f $_flock_layout; or not head -n 1 -- $_flock_layout 2>/dev/null | string match -q "$_flock_layout_v*"
     printf '%s\n' \
         "$_flock_layout_v" \
@@ -30,6 +30,9 @@ if not test -f $_flock_layout; or not head -n 1 -- $_flock_layout 2>/dev/null | 
         '            pane size="70%" focus=true name="Main"' \
         '            pane stacked=true size="30%" {' \
         '                pane name="Terminal"' \
+        '                pane name="Zed" focus=true command="fish" {' \
+        '                    args "-c" "__flock_zed_link (pwd); sleep infinity"' \
+        '                }' \
         '                pane name="Git" command="lazygit"' \
         '                pane name="K9s" command="k9s"' \
         '            }' \
