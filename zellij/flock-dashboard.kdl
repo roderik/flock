@@ -1,5 +1,5 @@
-// flock dashboard layout (for new zellij sessions)
-// Auto-installed by conf.d/flock.fish on shell init (version-checked)
+// flock dashboard v1
+// Auto-installed by conf.d/flock.fish on shell init
 
 layout {
     default_tab_template {

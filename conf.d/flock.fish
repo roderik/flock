@@ -12,7 +12,7 @@ mkdir -p ~/.config/zellij/layouts
 # Flock worktree tab layout
 set -l _flock_layout ~/.config/zellij/layouts/flock.kdl
 set -l _flock_layout_v '// flock layout v3'
-if not test -f $_flock_layout; or not head -1 $_flock_layout | string match -q "$_flock_layout_v*"
+if not test -f $_flock_layout; or not head -n 1 -- $_flock_layout 2>/dev/null | string match -q "$_flock_layout_v*"
     printf '%s\n' \
         "$_flock_layout_v" \
         'layout {' \
@@ -42,7 +42,7 @@ set -e _flock_layout _flock_layout_v
 # Dashboard layout (used by zj/zjr for new sessions)
 set -l _dash_layout ~/.config/zellij/layouts/flock-dashboard.kdl
 set -l _dash_layout_v '// flock dashboard v1'
-if not test -f $_dash_layout; or not head -1 $_dash_layout | string match -q "$_dash_layout_v*"
+if not test -f $_dash_layout; or not head -n 1 -- $_dash_layout 2>/dev/null | string match -q "$_dash_layout_v*"
     printf '%s\n' \
         "$_dash_layout_v" \
         'layout {' \
