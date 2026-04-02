@@ -1,6 +1,5 @@
 // flock worktree tab layout
-// Install: symlink to ~/.config/zellij/layouts/flock.kdl
-//   ln -sf (fisher path roderik/flock)/zellij/flock.kdl ~/.config/zellij/layouts/flock.kdl
+// Auto-installed by conf.d/flock.fish on shell init (version-checked)
 
 layout {
     default_tab_template {
